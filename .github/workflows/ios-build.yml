@@ -9,6 +9,10 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    - name: Debug Directory Structure
+      run: |
+         echo "Listing files post-checkout:"
+         ls -R
     - name: Run a one-line script
       run: echo Hello, world!
     - name: Run a multi-line script
@@ -23,20 +27,6 @@ jobs:
         cd ..
         ls
 
-  Android:
-
-    runs-on: macos-latest
-    
-    steps:
-
-    - uses: actions/checkout@v1
-      
-    - name: Android
-      run: |
-        cd SepidMelk
-        nuget restore
-        cd SepidMelk
-        msbuild SepidMelk.csproj /verbosity:normal /t:Rebuild /p:Configuration=Debug
 
   iOS:
 
@@ -45,10 +35,7 @@ jobs:
     steps:
 
     - uses: actions/checkout@v1
-    - name: Debug Directory Structure
-      run: |
-         echo "Listing files post-checkout:"
-         ls -R
+   
     - name: iOS
       run: |
         cd SepidMelk
