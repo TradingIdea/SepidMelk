@@ -3,20 +3,37 @@ name: CI on Push and Pull Request
 on: [push, pull_request]
 
 jobs:
-  iOS:
+  build:
+
     runs-on: macos-latest
     
     steps:
     - uses: actions/checkout@v1
-    
-    # Debug the directory structure to understand the issue
-    - name: Debug Directory Structure
-  run: |
-    echo "Listing root directory contents:"
-    ls -R
+    - name: Run a one-line script
+      run: echo Hello, world!
+    - name: Run a multi-line script
+      run: |
+        echo Add other actions to build,
+        echo test, and deploy your project.
+    - name: Show what in there
+      run: |
+        ls
+    - name: Show what it's inside
+      run: |
+        cd ..
+        ls
 
-- name: iOS
-  run: |
-    cd <correct-directory-path> || { echo "Directory not found!"; exit 1; }
-    nuget restore
-    msbuild SepidMelk/SepidMelk.iOS.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
+
+  iOS:
+
+    runs-on: macos-latest
+    
+    steps:
+
+    - uses: actions/checkout@v1
+      
+    - name: iOS
+      run: |
+        cd SepidMelk
+        nuget restore
+        msbuild SepidMelk/SepidMelk.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
