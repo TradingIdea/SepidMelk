@@ -45,7 +45,10 @@ jobs:
     steps:
 
     - uses: actions/checkout@v1
-      
+    - name: Debug Directory Structure
+      run: |
+         echo "Listing files post-checkout:"
+         ls -R
     - name: iOS
       run: |
         cd SepidMelk
