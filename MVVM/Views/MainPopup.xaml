@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<t:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"        
+             xmlns:t="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="SepidMelk.MVVM.Views.MainPopup">
+   
+        <Grid  BackgroundColor="White" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="400" WidthRequest="400" Padding="40">
+        <ScrollView >
+            <Label x:Name="lbl"  HorizontalTextAlignment="Justify" FlowDirection="RightToLeft" FontSize="12" FontAttributes="Bold" Padding="20"  />
+    </ScrollView>
+    </Grid>
+    
+</t:Popup>

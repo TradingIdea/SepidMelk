@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SepidMelk.MVVM.Views.MainPageView"
+             Title="MainPageView"
+             xmlns:viewmodel="clr-namespace:SepidMelk.MVVM.ViewModel"
+             x:Name="mainPageView"
+             FlowDirection="MatchParent">
+
+    <ContentPage.BindingContext>
+        <viewmodel:MainPageViewModel />
+    </ContentPage.BindingContext>
+
+    <ActivityIndicator 
+      Color="Blue"
+      IsRunning="{Binding IsBusy, Source={x:Reference Name=mainPageView}}"
+      IsVisible="{Binding IsBusy, Source={x:Reference Name=mainPageView}}"
+      VerticalOptions="Center"
+      HorizontalOptions="Center"/>
+ 
+
+    <Frame BorderColor="Gray" CornerRadius="6" Padding="0" >
+        <Grid RowDefinitions=".17*,.83*" Padding="0" FlowDirection="LeftToRight">
+
+
+            <!--Section 1-->
+
+            <Grid RowDefinitions=".6*,.4*" >
+                <Frame Grid.Row="0"  Grid.ColumnSpan="5" BackgroundColor="#528ed6"  Padding="0,0,0,0" >
+                    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label Text="سپید ملک     sepidmelk.ir"  TextColor="White" 
+                            HorizontalTextAlignment="Center" HorizontalOptions="Center" FontAttributes="Bold" FontSize="17" Padding="0"/>
+                        <Label Text="فایلینگ املاک مناطق تهران و سراسر کشور 9333016660/77975429" FontSize="12" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"  HorizontalOptions="Center" Padding="0"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+
+                <Grid Grid.Row="1" ColumnDefinitions=".18*,.52*,.3*" Grid.ColumnSpan="4"  Padding="0">
+                    <Frame Grid.Column="0" Padding="0">
+                        <Button  FontSize="11" Text="ثبت نام" Clicked="Button_Clicked_SignUp"  TextColor="White" FontAttributes="Bold" BackgroundColor="#528ed6" ></Button>
+                    </Frame>
+                    <Frame Grid.Column="1"  Grid.ColumnSpan="1" Padding="0">
+                        <Entry x:Name="entryPhone" Keyboard="Numeric" Text="{Binding phone}"  HorizontalTextAlignment="Center" FontAttributes="Bold" FontSize="12" />
+                    </Frame>
+                    <Frame Grid.Column="2" Grid.ColumnSpan="1" Padding="0">
+                        <Label Text="شماره موبایل"  TextColor="IndianRed" WidthRequest="100" VerticalOptions="Center" HorizontalTextAlignment="End" HorizontalOptions="End" FontSize="12" FontAttributes="Bold" Padding="10"/>
+                    </Frame>
+
+                </Grid>
+
+
+            </Grid>
+
+
+            <!--Section 2-->
+
+            <CollectionView Grid.Row="1"  x:Name="list" ItemsSource="{Binding melksData}" 
+                                SelectionMode="Single" SelectedItem="{Binding SelectedMelk}"
+                                EmptyView=" هیچ آگهی یافت نشد!" Margin="10"   >
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="5"  Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
+
+
+                <CollectionView.Header>
+                    <Frame HeightRequest="80" Margin="0,6">
+                        <Grid ColumnDefinitions=".3*,.7*" >
+
+                            <Grid Grid.Column="0" ColumnDefinitions=".2*,.8*">
+                                <Label Grid.Column="0"  Text="{Binding Count}" FontSize="13" VerticalOptions="Center" HorizontalTextAlignment="End" FontAttributes="Bold"  TextColor="#528ed6"/>
+                                <Label Grid.Column="1" TextColor="#528ed6" Text="تعداد آگهی:" FontSize="13" HorizontalTextAlignment="Start" VerticalOptions="Center" FontAttributes="Bold"/>
+                            </Grid>
+
+                            <Grid Grid.Column="1" ColumnDefinitions=".8*,.2*">
+                                <Grid Grid.Column="0" ColumnDefinitions=".2*,.3*,.5*" Padding="0,0,0,0"  VerticalOptions="Center">
+                                    <Button Grid.Column="0"  Text="جدید" Clicked="Button_Clicked_New"   FontAttributes="Bold"  TextColor="Black" BackgroundColor="#FCF259" FontSize="12" Margin="0,0,3,0" Padding="0,0,0,0"/>
+                                    <Button Grid.Column="1"  Text="جستجو" Clicked="Button_Clicked" FontAttributes="Bold"  TextColor="Black" BackgroundColor="#FCF259" FontSize="12" Margin="0,0,3,0" Padding="0,0,0,0"/>
+                                    <Frame Grid.Column="2" Padding="0">
+                                        <Entry  x:Name="entrySearch" Text="{Binding Search}" Placeholder="جستجو..." HorizontalTextAlignment="Center" FontAttributes="Bold" FontSize="12"/>
+                                    </Frame>
+                                </Grid>
+
+                                <Picker Grid.Column="1" x:Name="picker" FlowDirection="RightToLeft"  Title="فیلتر"  HorizontalTextAlignment="Start" FontSize="12" FontAttributes="Bold"
+                                        VerticalTextAlignment="Start" SelectedIndexChanged="picker_SelectedIndexChanged" Margin="5,0,0,0" >
+                                    <Picker.ItemsSource>
+                                        <x:Array Type="{x:Type x:String}">
+                                            <x:String>عنوان_ملک</x:String>
+                                            <x:String>شرح_ملک</x:String>
+                                            <x:String>متراژ</x:String>
+                                            <x:String>آدرس</x:String>
+                                            <x:String>اجاره</x:String>
+                                            <x:String>لینک</x:String>
+                                            <x:String>لوکیشن</x:String>
+                                            <x:String>تاریخ_شمسی</x:String>
+                                            <x:String>سال_ساخت</x:String>
+                                            <x:String>شماره</x:String>
+                                            <x:String>طبقه</x:String>
+                                            <x:String>نوع</x:String>
+
+                                        </x:Array>
+                                    </Picker.ItemsSource>
+                                </Picker>
+                            </Grid>
+
+
+                        </Grid>
+                    </Frame>
+                </CollectionView.Header>
+
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate  x:Name="dt" >
+                        <Frame BorderColor="Gray" CornerRadius="8"  Margin="0" Padding="1">
+                            <Grid RowDefinitions=".4*,.6*" HeightRequest="500" Padding="0">
+
+                                <!--Section 2-1-->
+                                <Grid  Grid.Row="0"  RowDefinitions=".26*,.26*,.48*" ColumnDefinitions=".25*,.25*,.25*,.25*" Padding="0">
+
+                                    <Grid Grid.Row="0"  ColumnDefinitions=".19*,.24*,.33*,.24*" Grid.ColumnSpan="4"  Padding="0">
+                                        <Frame  Grid.ColumnSpan="1" Padding="0" >
+                                            <Grid  ColumnDefinitions=".5*,.5*"  Padding="0">
+                                                <Label Grid.Column="0" Text="{Binding منطقه}" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Start" HorizontalTextAlignment="Start" FontAttributes="Bold" FontSize="12" Padding="5,10,0,10"/>
+                                                <Label Grid.Column="1" Text="منطقه"  TextColor="#528ed6" WidthRequest="60" HorizontalTextAlignment="End" VerticalOptions="Center" HorizontalOptions="End"  FontSize="12" FontAttributes="Bold" Padding="10"/>
+                                            </Grid>
+                                        </Frame>
+                                        <Frame Grid.Column="1" Grid.ColumnSpan="1" Padding="0">
+                                            <Grid  ColumnDefinitions=".5*,.5*"  Padding="0">
+                                                <Label Grid.Column="0" Text="{Binding نوع}" TextColor="Black" WidthRequest="60" VerticalOptions="Center" HorizontalOptions="Start" HorizontalTextAlignment="Start" FontAttributes="Bold" VerticalTextAlignment="Center" FontSize="12" Padding="5,10,0,10"></Label>
+                                                <Label Grid.Column="1" Text="نوع" WidthRequest="60"  TextColor="#528ed6" FontAttributes="Bold" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalTextAlignment="End" HorizontalOptions="End"  FontSize="12"  Padding="10"/>
+                                            </Grid>
+                                        </Frame>
+                                        <Frame Grid.Column="2" Grid.ColumnSpan="1" Padding="0">
+                                            <Grid  ColumnDefinitions=".5*,.5*"  Padding="0">
+                                                <Label Grid.Column="0" Text="{Binding تاریخ_شمسی}" TextColor="Black" WidthRequest="70" VerticalOptions="Center" VerticalTextAlignment="Center"  HorizontalTextAlignment="Start" HorizontalOptions="Start" FontAttributes="Bold" FontSize="12" Padding="3,10,0,10"></Label>
+                                                <Label Grid.Column="1" Text="تاریخ"  TextColor="#528ed6" WidthRequest="50" VerticalOptions="Center" HorizontalTextAlignment="End" HorizontalOptions="End" VerticalTextAlignment="Center" FontSize="12" FontAttributes="Bold" Padding="10"/>
+                                            </Grid>
+                                        </Frame>
+                                        <Frame Grid.Column="3" Grid.ColumnSpan="1" Padding="0">
+                                            <Grid  ColumnDefinitions=".5*,.5*"  Padding="0">
+                                                <Label Grid.Column="0" Text="{Binding شماره}" TextColor="Black" WidthRequest="50" VerticalOptions="Center" HorizontalTextAlignment="Start" HorizontalOptions="Start" VerticalTextAlignment="Center" FontAttributes="Bold"  FontSize="12" Padding="5,10,0,10"></Label>
+                                                <Label Grid.Column="1" Text="شماره" WidthRequest="60"  TextColor="#528ed6" VerticalOptions="Center" HorizontalTextAlignment="End" HorizontalOptions="End"  FontSize="12" FontAttributes="Bold" Padding="10"/>
+                                            </Grid>
+                                        </Frame>
+                                    </Grid>
+
+
+                                    <Grid Grid.Row="1" ColumnDefinitions=".76*,.24*" Grid.ColumnSpan="4"  Padding="0">
+                                        <Frame  Grid.ColumnSpan="1" Padding="0">
+                                            <Label Text="{Binding عنوان_ملک }"  FontSize="12" MaxLines="5" TextColor="Black" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontAttributes="Bold" >
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}},Path=OnvanCommand}" 
+                                                                          CommandParameter="{Binding عنوان_ملک}"/>
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                        </Frame>
+                                        <Frame Grid.Column="1" Grid.ColumnSpan="1" Padding="0">
+                                            <Grid   Padding="0">
+                                                <Label Text="عنوان ملک" WidthRequest="100"  TextColor="#528ed6" VerticalOptions="Center" HorizontalTextAlignment="End" HorizontalOptions="End"  FontSize="12" FontAttributes="Bold" Padding="10"/>
+                                            </Grid>
+                                        </Frame>
+                                    </Grid>
+
+                                    <Grid Grid.Row="2" Grid.ColumnSpan="4"  Padding="0">
+
+                                        <Frame   Padding="0" >
+                                            <Label Text="{Binding شرح_ملک }" MaxLines="5"  FontSize="12"  TextColor="Black" VerticalOptions="Center" VerticalTextAlignment="Center"   HorizontalTextAlignment="Center" FontAttributes="Bold" >
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}},Path=SharhCommand}" 
+                                                 CommandParameter="{Binding شرح_ملک}"/>
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                        </Frame>
+                                    </Grid>
+
+                                </Grid>
+
+
+                           
+
+
+                                <!--Section 2-2-->
+                                <Grid Grid.Row="2" RowDefinitions=".17*,.17*,.17*,.17*,.17*,.1*" ColumnDefinitions=".25*,.25*,.25*,.25*" Padding="0">
+                                    <Grid   Grid.ColumnSpan="4"  Padding="0">
+                                        <Frame  Padding="0">
+                                            <Label Text="{Binding آدرس }"  FontSize="12" MaxLines="5"  TextColor="Black" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" FontAttributes="Bold" >
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}},Path=AddressCommand}" 
+                                                                          CommandParameter="{Binding آدرس}"/>
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                        </Frame>
+                                    </Grid>
+
+                                    <Grid Grid.Row="1" ColumnDefinitions=".33*,.34*,.33*" Grid.ColumnSpan="4"  Padding="0">
+
+
+                                        <Frame Grid.Column="0" Grid.ColumnSpan="1" Padding="0">
+                                            <Grid  ColumnDefinitions=".3*,.7*"  Padding="0">
+                                                <Label Grid.Column="0" Text="{Binding طبقه}" TextColor="Black"  HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalOptions="Center" VerticalTextAlignment="Center" FontAttributes="Bold"  FontSize="12" Padding="20,0,0,0"/>
+                                                <Label Grid.Column="1" Text="طبقه" WidthRequest="60" TextColor="#528ed6" VerticalOptions="Center" HorizontalTextAlignment="End" HorizontalOptions="End"  FontSize="12" FontAttributes="Bold" Padding="10"/>
+                                            </Grid>
+                                        </Frame>
+                                        <Frame Grid.Column="1" Grid.ColumnSpan="1" Padding="0">
+                                            <Grid  ColumnDefinitions=".3*,.7*"  Padding="0">
+                                                <Label Grid.Column="0" Text="{Binding سال_ساخت}" TextColor="Black" WidthRequest="50" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" HorizontalOptions="Start" FontAttributes="Bold"  FontSize="12" Padding="5"></Label>
+                                                <Label Grid.Column="1" Text="سال ساخت" WidthRequest="80" TextColor="#528ed6" VerticalOptions="Center" HorizontalTextAlignment="End" HorizontalOptions="End"  FontSize="12" FontAttributes="Bold" Padding="10"/>
+                                            </Grid>
+                                        </Frame>
+                                        <Frame Grid.Column="2" Grid.ColumnSpan="1" Padding="0">
+                                            <Grid  ColumnDefinitions=".5*,.5*"  Padding="0">
+                                                <Label Grid.Column="0" WidthRequest="60" TextColor="Black" Text="{Binding متراژ}" VerticalOptions="Center" HorizontalTextAlignment="Center" HorizontalOptions="Start" FontAttributes="Bold" Padding="10"></Label>
+                                                <Label Grid.Column="1" Text="متراژ" WidthRequest="60"  TextColor="#528ed6" VerticalOptions="Center" HorizontalTextAlignment="End" HorizontalOptions="End"  FontSize="12" FontAttributes="Bold" Padding="10"/>
+                                            </Grid>
+                                        </Frame>
+                                    </Grid>
+
+
+                                    <Grid Grid.Row="2" ColumnDefinitions=".33*,.33*,.33*" Grid.ColumnSpan="4"  Padding="0">
+
+                                        <Frame Grid.Column="0" Grid.ColumnSpan="1" Padding="0">
+                                            <Grid  ColumnDefinitions=".5*,.5*"  Padding="0">
+                                                <Label Grid.Column="0" Text="{Binding اجاره }" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAttributes="Bold"  FontSize="12"/>
+                                                <Label Grid.Column="1" Text="اجاره" WidthRequest="60"  TextColor="#528ed6" VerticalOptions="Center" HorizontalTextAlignment="End" HorizontalOptions="End"  FontSize="12" FontAttributes="Bold" Padding="10"/>
+                                            </Grid>
+                                        </Frame>
+                                        <Frame Grid.Column="1" Grid.ColumnSpan="1" Padding="0">
+                                            <Grid  ColumnDefinitions=".5*,.5*"  Padding="0">
+                                                <Label Grid.Column="0" Text="{Binding رهن }" TextColor="Black" WidthRequest="40" VerticalOptions="Center" HorizontalTextAlignment="Start" HorizontalOptions="Start" FontAttributes="Bold"  FontSize="12"></Label>
+                                                <Label Grid.Column="1" Text="رهن" WidthRequest="60" TextColor="#528ed6" VerticalOptions="Center" HorizontalTextAlignment="End" HorizontalOptions="End"  FontSize="12" FontAttributes="Bold" Padding="10"/>
+                                            </Grid>
+                                        </Frame>
+                                        <Frame Grid.Column="2" Grid.ColumnSpan="1" Padding="0">
+                                            <Grid  ColumnDefinitions=".5*,.5*"  Padding="0">
+                                                <Label Grid.Column="0" Text="{Binding فروش }" WidthRequest="40" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Start" HorizontalOptions="Start" FontAttributes="Bold"  FontSize="12" Padding="10"></Label>
+                                                <Label Grid.Column="1" WidthRequest="60" Text="فروش"  TextColor="#528ed6" VerticalOptions="Center" HorizontalTextAlignment="End" HorizontalOptions="End"  FontSize="12" FontAttributes="Bold" Padding="10"/>
+                                            </Grid>
+                                        </Frame>
+                                    </Grid>
+
+
+                                    <Grid Grid.Row="3" ColumnDefinitions=".75*,.25*" Grid.ColumnSpan="4"  Padding="0">
+
+                                        <Frame  Grid.ColumnSpan="1" Padding="0">
+                                            <Label Text="{Binding لینک }"  FontSize="11"  TextColor="Black" VerticalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontAttributes="Bold" >
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}},Path=OpenDivarCommand}" 
+                                                                          CommandParameter="{Binding لینک}"/>
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                        </Frame>
+
+                                        <Frame Grid.Column="1" Grid.ColumnSpan="1" Padding="0">
+                                            <Grid   Padding="0">
+                                                <Label Grid.Column="1" Text="لینک" WidthRequest="60"  TextColor="#528ed6" VerticalOptions="Center" HorizontalTextAlignment="End" HorizontalOptions="End"  FontSize="12" FontAttributes="Bold" Padding="10"/>
+                                            </Grid>
+                                        </Frame>
+                                    </Grid>
+
+
+                                    <Grid Grid.Row="4" ColumnDefinitions=".75*,.25*" Grid.ColumnSpan="4"  Padding="0">
+                                        <Frame  Grid.ColumnSpan="1" Padding="0">
+                                            <Label Text="{Binding لوکیشن }" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" TextColor="Black" FontAttributes="Bold"  FontSize="11">
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainPageViewModel}},Path=OpenDivarCommand}" 
+                                                       CommandParameter="{Binding لوکیشن}"/>
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                        </Frame>
+                                        <Frame Grid.Column="1" Grid.ColumnSpan="1" Padding="0">
+                                            <Grid    Padding="0">
+                                                <Label Text="لوکیشن"  TextColor="#528ed6" WidthRequest="60" VerticalOptions="Center" HorizontalTextAlignment="End" HorizontalOptions="End"  FontSize="12" FontAttributes="Bold" Padding="10"/>
+                                            </Grid>
+                                        </Frame>
+                                    </Grid>
+
+                                    <Grid Grid.Row="5" Grid.ColumnSpan="4" Padding="0">
+
+                                        <Frame  Padding="0">
+                                            <Button Text="جدید" Clicked="Button_Clicked_New" TextColor="White" BackgroundColor="#528ed6" FontSize="12"  FontAttributes="Bold"   Padding="0,0,0,0"/>
+                                        </Frame>
+                                    </Grid>
+
+
+                                </Grid>
+
+
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+
+        </Grid>
+    </Frame>
+    
+</ContentPage>
