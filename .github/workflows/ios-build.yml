@@ -1,31 +1,53 @@
-name: Build iOS MAUI App
+name: CI on Push and Pull Request
 
-on:
-  workflow_dispatch:
+on: [push, pull_request]
 
 jobs:
-  build-ios:
+  build:
+
     runs-on: macos-latest
-
+    
     steps:
-      - uses: actions/checkout@v3
+    - uses: actions/checkout@v1
+    - name: Run a one-line script
+      run: echo Hello, world!
+    - name: Run a multi-line script
+      run: |
+        echo Add other actions to build,
+        echo test, and deploy your project.
+    - name: Show what in there
+      run: |
+        ls
+    - name: Show what it's inside
+      run: |
+        cd ..
+        ls
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: "9.0.x"
+  Android:
 
-      - name: Install MAUI workload
-        run: dotnet workload install maui ios
+    runs-on: macos-latest
+    
+    steps:
 
-      - name: Restore NuGet packages
-        run: dotnet restore
+    - uses: actions/checkout@v1
+      
+    - name: Android
+      run: |
+        cd SepidMelk
+        nuget restore
+        cd SepidMelk
+        msbuild SepidMelk.csproj /verbosity:normal /t:Rebuild /p:Configuration=Debug
 
-      - name: Build iOS project
-        run: dotnet publish -f:net9.0-ios -c Release -o ./output
+  iOS:
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: ios-app
-          path: ./output
+    runs-on: macos-latest
+    
+    steps:
+
+    - uses: actions/checkout@v1
+      
+    - name: iOS
+      run: |
+        cd SepidMelk
+        nuget restore
+        msbuild SepidMelk/SepidMelk.iOS.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
