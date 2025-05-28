@@ -23,10 +23,10 @@ jobs:
 
     - name: Build iOS Project
       run: |
-        cd /Users/runner/work/SepidMelk # Adjust if necessary
-        if [ ! -f "SepidMelk.csproj" ]; then
-          echo "SepidMelk.csproj not found in expected directory!"
-          exit 1
-        fi
-        nuget restore SepidMelk.csproj
-        msbuild SepidMelk.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
+       cd /Users/runner/work/SepidMelk/SepidMelk # Adjust path as necessary
+       if [ ! -f "SepidMelk.csproj" ]; then
+       echo "SepidMelk.csproj not found in expected directory!"
+       exit 1
+       fi
+       nuget restore SepidMelk.csproj
+       msbuild SepidMelk.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
