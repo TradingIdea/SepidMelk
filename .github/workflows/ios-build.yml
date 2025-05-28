@@ -6,27 +6,23 @@ jobs:
   iOS:
     runs-on: macos-latest
 
-    steps:
-    - uses: actions/checkout@v1
+ 
+  steps:
+    - uses: actions/checkout@v3
       with:
-        fetch-depth: 0
-        submodules: true
+      fetch-depth: 0
+      submodules: true
 
-    - name: Debug Directory Structure
-      run: |
-        echo "Current directory:"
-        pwd
-        echo "Listing files in the current directory:"
-        ls -al
-        echo "Listing files in /Users/runner/work/SepidMelk/SepidMelk:"
-        ls -al /Users/runner/work/SepidMelk/SepidMelk || echo "Directory does not exist"
+   
+    - name: Install Latest Mono
+      run: brew install mono
 
     - name: Build iOS Project
       run: |
-       cd /Users/runner/work/SepidMelk/SepidMelk # Adjust path as necessary
-       if [ ! -f "SepidMelk.csproj" ]; then
-       echo "SepidMelk.csproj not found in expected directory!"
-       exit 1
-       fi
-       nuget restore SepidMelk.csproj
-       msbuild SepidMelk.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
+        cd /Users/runner/work/SepidMelk/SepidMelk || { echo "Project directory not found!"; exit 1; }
+        if [ ! -f "SepidMelk.csproj" ]; then
+        echo "SepidMelk.csproj not found in expected directory!"
+        exit 1
+        fi
+        nuget restore SepidMelk.csproj
+        msbuild SepidMelk.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
