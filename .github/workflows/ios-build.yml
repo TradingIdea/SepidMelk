@@ -11,13 +11,12 @@ jobs:
     
     # Debug the directory structure to understand the issue
     - name: Debug Directory Structure
-      run: |
-        echo "Listing root directory contents:"
-        ls -R
-    
-    - name: iOS
-      run: |
-        # Update this path if needed based on the debug output
-        cd SepidMelk || { echo "Directory 'SepidMelk' not found!"; exit 1; }
-        nuget restore
-        msbuild SepidMelk/SepidMelk.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
+  run: |
+    echo "Listing root directory contents:"
+    ls -R
+
+- name: iOS
+  run: |
+    cd <correct-directory-path> || { echo "Directory not found!"; exit 1; }
+    nuget restore
+    msbuild SepidMelk/SepidMelk.iOS.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
