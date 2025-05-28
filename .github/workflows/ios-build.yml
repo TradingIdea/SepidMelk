@@ -31,7 +31,17 @@ jobs:
     steps:
 
     - uses: actions/checkout@v1
-      
+    
+    - name: Check repository structure
+      run: |
+         echo "Current directory:"
+         pwd
+          echo "Listing files in the current directory:"
+         ls -al
+         echo "Listing files in the parent directory:"
+         cd ..
+         ls -al
+         
     - name: iOS
       run: |
         cd SepidMelk
