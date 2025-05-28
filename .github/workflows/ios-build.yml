@@ -44,6 +44,6 @@ jobs:
          
     - name: iOS
       run: |
-        cd SepidMelk
+        cd /Users/runner/work/SepidMelk/SepidMelk
         nuget restore
-        msbuild SepidMelk/SepidMelk.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
+        msbuild /Users/runner/work/SepidMelk/SepidMelk.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
