@@ -7,22 +7,24 @@ jobs:
     runs-on: macos-latest
 
  
-  steps:
-    - uses: actions/checkout@v3
-      with:
-      fetch-depth: 0
-      submodules: true
+    steps:
+     - uses: actions/checkout@v3
+       with:
+        fetch-depth: 0
+        submodules: true
+
+     - name: Install Latest Mono
+       run: brew install mono
 
    
-    - name: Install Latest Mono
-      run: brew install mono
-
-    - name: Build iOS Project
-      run: |
-        cd /Users/runner/work/SepidMelk/SepidMelk || { echo "Project directory not found!"; exit 1; }
-        if [ ! -f "SepidMelk.csproj" ]; then
-        echo "SepidMelk.csproj not found in expected directory!"
-        exit 1
-        fi
-        nuget restore SepidMelk.csproj
-        msbuild SepidMelk.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
+        
+  
+     - name: Build iOS Project
+       run: |
+          cd /Users/runner/work/SepidMelk/SepidMelk || { echo "Project directory not found!"; exit 1; }
+          if [ ! -f "SepidMelk.csproj" ]; then
+          echo "SepidMelk.csproj not found in expected directory!"
+          exit 1
+          fi
+          nuget restore SepidMelk.csproj
+          msbuild SepidMelk.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
