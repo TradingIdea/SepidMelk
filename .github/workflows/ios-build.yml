@@ -3,47 +3,30 @@ name: CI on Push and Pull Request
 on: [push, pull_request]
 
 jobs:
-  build:
-
-    runs-on: macos-latest
-    
-    steps:
-    - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
-    - name: Show what in there
-      run: |
-        ls
-    - name: Show what it's inside
-      run: |
-        cd ..
-        ls
-
-
   iOS:
-
     runs-on: macos-latest
-    
-    steps:
 
+    steps:
     - uses: actions/checkout@v1
-    
-    - name: Check repository structure
+      with:
+        fetch-depth: 0
+        submodules: true
+
+    - name: Debug Directory Structure
       run: |
-         echo "Current directory:"
-         pwd
-          echo "Listing files in the current directory:"
-         ls -al
-         echo "Listing files in the parent directory:"
-         cd ..
-         ls -al
-         
-    - name: iOS
+        echo "Current directory:"
+        pwd
+        echo "Listing files in the current directory:"
+        ls -al
+        echo "Listing files in /Users/runner/work/SepidMelk/SepidMelk:"
+        ls -al /Users/runner/work/SepidMelk/SepidMelk || echo "Directory does not exist"
+
+    - name: Build iOS Project
       run: |
-        cd /Users/runner/work/SepidMelk/SepidMelk
-        nuget restore
-        msbuild /Users/runner/work/SepidMelk/SepidMelk.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
+        cd /Users/runner/work/SepidMelk # Adjust if necessary
+        if [ ! -f "SepidMelk.csproj" ]; then
+          echo "SepidMelk.csproj not found in expected directory!"
+          exit 1
+        fi
+        nuget restore SepidMelk.csproj
+        msbuild SepidMelk.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
