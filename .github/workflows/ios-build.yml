@@ -20,4 +20,4 @@ jobs:
         # Update this path if needed based on the debug output
         cd SepidMelk || { echo "Directory 'SepidMelk' not found!"; exit 1; }
         nuget restore
-        msbuild SepidMelk/SepidMelk.iOS.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
+        msbuild SepidMelk/SepidMelk.csproj /verbosity:normal /t:Rebuild /p:Platform=iPhoneSimulator /p:Configuration=Debug
